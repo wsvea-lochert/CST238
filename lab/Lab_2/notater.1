@@ -1,0 +1,85 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+double average(double array[], int size);
+
+struct Bank
+{
+    string name;
+    int account;
+    double balance;
+};
+
+
+int main()
+{
+    string file_name;
+    bool controll = false;
+    char cont = 'Y';
+
+    cout << "Enter input file name: ";
+    cin >> file_name;
+
+    ifstream input_file(file_name);
+    
+    if (input_file.fail()) 
+    {
+        cout << "Error: Input file open failed.\n";
+        return 0;
+    }
+    
+    Bank customers[30];
+    int size = 30;
+    int index = 0;
+    int teller = 0;
+    string searchName;
+    
+   while(cont == 'Y' || cont == 'y'){
+        cout << "---------------------------------------------------" << endl;
+        cout << "Record Finder - Enter a customer name: ";
+        cin >> searchName;
+        cout << "---------------------------------------------------" << endl;
+        
+        while(!controll)
+        {
+            Bank customer;
+            input_file >> customer.name;
+            input_file >> customer.account;
+            input_file >> customer.balance;
+            
+            if(customer.name == "STOP"){
+                controll = true;
+            }
+            customers[index] = customer;
+            
+            if(customers[index].name == searchName)
+            {
+                 
+                cout << "Name: " << customer.name << endl 
+                     << "Account: " << customer.account << endl 
+                     << "Balance: " << customer.balance << endl << endl;
+                index++;
+                teller++;
+            }
+            
+            if(index == size){
+                controll = true;
+            }
+            index++;
+        }
+        
+        
+        
+        cout << "--------------------------------------------------" << endl << endl;
+        cout << "Do you want to continue?  (Y/N) " << index;
+        cin >> cont;
+        cout << endl;
+        
+        if(cont == 'n' || cont == 'N'){
+            cout << "BYE!" << endl;
+            
+        }
+    }
+    return 0;
+}
